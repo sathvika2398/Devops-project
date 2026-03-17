@@ -1,0 +1,446 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-background-tertiary);color:var(--color-text-primary)}
+.app{display:flex;min-height:600px}
+.sb{width:220px;background:#0f2044;display:flex;flex-direction:column;flex-shrink:0;border-radius:var(--border-radius-lg) 0 0 var(--border-radius-lg)}
+.sb-logo{padding:18px 16px 14px;border-bottom:0.5px solid rgba(255,255,255,.1)}
+.sb-icon{width:36px;height:36px;border-radius:10px;background:#c0392b;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px}
+.sb-name{font-size:14px;font-weight:500;color:#fff}
+.sb-sub{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase}
+.sb-nav{flex:1;padding:10px 8px}
+.sb-sec{font-size:10px;font-weight:500;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase;padding:10px 8px 5px}
+.nb{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;width:100%;text-align:left;margin-bottom:1px;transition:all .15s}
+.nb:hover{background:rgba(255,255,255,.06);color:#fff}
+.nb.on{background:rgba(192,57,43,.3);color:#fff;font-weight:500;border-left:2px solid #c0392b;padding-left:8px}
+.nb-ic{font-size:14px;width:16px;text-align:center}
+.sb-user{padding:12px;border-top:0.5px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px}
+.av{width:32px;height:32px;border-radius:50%;background:#c0392b;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#fff;flex-shrink:0}
+.un{font-size:12px;font-weight:500;color:#fff}
+.ur{font-size:10px;color:rgba(255,255,255,.3)}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-radius:0 var(--border-radius-lg) 0 0}
+.tb-l .pg-t{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.tb-l .pg-s{font-size:11px;color:var(--color-text-secondary)}
+.tb-r{display:flex;align-items:center;gap:8px}
+.pill{display:flex;align-items:center;gap:5px;background:rgba(192,57,43,.08);border:0.5px solid rgba(192,57,43,.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;color:#c0392b}
+.dot{width:6px;height:6px;border-radius:50%;background:#e74c3c;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.tb-time{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:4px 10px}
+.content{padding:18px;flex:1;overflow-y:auto}
+.page{display:none}.page.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.r::before{background:#c0392b}.kpi.g::before{background:#1a7a4a}.kpi.b::before{background:#0f2044}.kpi.o::before{background:#b8860b}
+.kpi-ic{font-size:18px;margin-bottom:8px}
+.kpi-n{font-size:22px;font-weight:500;line-height:1;margin-bottom:2px}
+.kpi-l{font-size:11px;color:var(--color-text-secondary);margin-bottom:5px}
+.kpi-t{font-size:11px;font-weight:500}
+.kpi-t.up{color:#1a7a4a}.kpi-t.dn{color:#c0392b}.kpi-t.neu{color:#0f2044}
+.row{display:grid;gap:10px;margin-bottom:10px}
+.r21{grid-template-columns:2fr 1fr}.r12{grid-template-columns:1fr 2fr}.r11{grid-template-columns:1fr 1fr}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:18px}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.ct{font-size:13px;font-weight:500}
+.ca{font-size:12px;color:#c0392b;cursor:pointer;border:none;background:none;font-family:inherit}
+.mbar{margin-bottom:10px}
+.mbar-h{display:flex;justify-content:space-between;margin-bottom:4px}
+.mbar-n{font-size:12px;color:var(--color-text-primary)}
+.mbar-p{font-size:12px;font-weight:500}
+.mbar-t{height:5px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.mbar-f{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.div{border-top:0.5px solid var(--color-border-tertiary);margin:12px 0 10px}
+.sub-lbl{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.prog-i{margin-bottom:10px}
+.prog-h{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px}
+.prog-l{color:var(--color-text-secondary)}
+.prog-p{font-weight:500}
+.prog-t{height:4px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.prog-f{height:100%;border-radius:3px}
+.donut-w{display:flex;align-items:center;gap:16px}
+.dleg{flex:1}
+.dli{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:12px}
+.dld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dll{color:var(--color-text-secondary);flex:1}.dlv{font-weight:500}
+.acts{display:flex;flex-direction:column}
+.ai{display:flex;gap:9px;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.ai:last-child{border-bottom:none}
+.a-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.a-ic.r{background:rgba(192,57,43,.08)}.a-ic.g{background:rgba(26,122,74,.08)}.a-ic.b{background:rgba(15,32,68,.07)}.a-ic.o{background:rgba(184,134,11,.07)}
+.a-t{font-size:12px;margin-bottom:2px;line-height:1.4}
+.a-m{font-size:11px;color:var(--color-text-secondary)}
+tbl{width:100%;border-collapse:collapse}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-secondary);padding:0 10px 8px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:9px 10px;font-size:12px;border-bottom:0.5px solid var(--color-border-tertiary)}
+tr:last-child td{border-bottom:none}
+.bdg{display:inline-flex;align-items:center;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500}
+.bdg.pos{background:rgba(192,57,43,.1);color:#a32d2d}.bdg.neg{background:rgba(26,122,74,.1);color:#0f5e30}.bdg.hi{background:rgba(184,134,11,.1);color:#7a5500}
+.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;text-align:center;color:var(--color-text-secondary)}
+.ph-ic{font-size:40px;margin-bottom:12px}
+.ph h2{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.ph p{font-size:13px;line-height:1.6;max-width:340px}
+.mc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px;text-align:center}
+.mc-n{font-size:20px;font-weight:500;color:#c0392b;margin-bottom:3px}
+.mc-l{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em}
+.feat-b{margin-bottom:9px}
+.feat-h{display:flex;justify-content:space-between;margin-bottom:3px;font-size:12px}
+.feat-nm{color:var(--color-text-primary)}.feat-rk{color:var(--color-text-secondary)}
+.feat-t{height:4px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.feat-f{height:100%;border-radius:3px;background:#0f2044}
+.pred-hero{background:#0f2044;border-radius:var(--border-radius-lg);padding:24px;margin-bottom:14px;position:relative;overflow:hidden}
+.pred-hero h2{font-size:18px;font-weight:500;color:#fff;margin-bottom:5px}
+.pred-hero p{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;max-width:520px}
+.pform{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.pf label{display:block;font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.pf input,.pf select{width:100%;padding:9px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);font-family:inherit;font-size:13px;color:var(--color-text-primary);outline:none}
+.pf input:focus,.pf select:focus{border-color:#c0392b;box-shadow:0 0 0 2px rgba(192,57,43,.1)}
+.btn-pred{padding:11px 28px;background:#c0392b;color:#fff;border:none;border-radius:var(--border-radius-md);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .2s}
+.btn-pred:hover{opacity:.85}
+.btn-clr{padding:11px 18px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);font-family:inherit;font-size:13px;cursor:pointer;color:var(--color-text-secondary)}
+.res-card{border-radius:var(--border-radius-lg);padding:18px;margin-top:14px;display:none;border:1px solid transparent}
+.res-card.pos{background:rgba(192,57,43,.04);border-color:rgba(192,57,43,.2)}
+.res-card.neg{background:rgba(26,122,74,.04);border-color:rgba(26,122,74,.18)}
+.res-card.on{display:block}
+.res-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.res-big{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.res-big.pos{background:rgba(192,57,43,.1)}.res-big.neg{background:rgba(26,122,74,.08)}
+.res-v{font-size:17px;font-weight:500}
+.res-v.pos{color:#c0392b}.res-v.neg{color:#1a7a4a}
+.res-s{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.conf-row{margin-top:12px}
+.conf-l{display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:5px}
+.conf-t{height:6px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.conf-f{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.conf-f.pos{background:#c0392b}.conf-f.neg{background:#1a7a4a}
+.mv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.mv{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;text-align:center}
+.mv-n{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:3px}
+.mv-r{font-size:12px;font-weight:500}.mv-r.pos{color:#c0392b}.mv-r.neg{color:#1a7a4a}
+.mv-c{font-size:10px;color:var(--color-text-secondary)}
+</style>
+
+<div class="app">
+  <div class="sb">
+    <div class="sb-logo">
+      <div class="sb-icon">♥</div>
+      <div class="sb-name">HDNN System</div>
+      <div class="sb-sub">Heart Disease AI</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-sec">Clinical</div>
+      <button class="nb on" onclick="goto('overview',this)"><span class="nb-ic">◉</span> Dashboard</button>
+      <button class="nb" onclick="goto('predict',this)"><span class="nb-ic">⬡</span> Predict Patient</button>
+      <button class="nb" onclick="goto('patients',this)"><span class="nb-ic">♥</span> Patient Records</button>
+      <div class="sb-sec">Analytics</div>
+      <button class="nb" onclick="goto('models',this)"><span class="nb-ic">▲</span> Model Performance</button>
+      <button class="nb" onclick="goto('features',this)"><span class="nb-ic">≡</span> Feature Analysis</button>
+      <button class="nb" onclick="goto('datasets',this)"><span class="nb-ic">▪</span> Datasets</button>
+      <div class="sb-sec">System</div>
+      <button class="nb" onclick="goto('reports',this)"><span class="nb-ic">□</span> Reports</button>
+      <button class="nb" onclick="goto('settings',this)"><span class="nb-ic">◎</span> Settings</button>
+    </nav>
+    <div class="sb-user">
+      <div class="av">D</div>
+      <div><div class="un">Dr. Samina Amin</div><div class="ur">Clinician · KUST</div></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="tb-l">
+        <div class="pg-t" id="pg-title">Dashboard Overview</div>
+        <div class="pg-s" id="pg-sub">CNN-LSTM Hybrid Heart Disease Prediction System</div>
+      </div>
+      <div class="tb-r">
+        <div class="pill"><span class="dot"></span> Model Active</div>
+        <div class="tb-time" id="clock">--:--</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- OVERVIEW -->
+      <div class="page on" id="page-overview">
+        <div class="kpis">
+          <div class="kpi r"><div class="kpi-ic">♥</div><div class="kpi-n">1,247</div><div class="kpi-l">Patients Screened Today</div><div class="kpi-t up">↑ 8.3% from yesterday</div></div>
+          <div class="kpi r"><div class="kpi-ic">⚠</div><div class="kpi-n">389</div><div class="kpi-l">HD Positive Detected</div><div class="kpi-t dn">31.2% risk rate</div></div>
+          <div class="kpi g"><div class="kpi-ic">✓</div><div class="kpi-n">858</div><div class="kpi-l">HD Negative (Healthy)</div><div class="kpi-t up">68.8% clear</div></div>
+          <div class="kpi b"><div class="kpi-ic">◎</div><div class="kpi-n">98.86%</div><div class="kpi-l">CNN-LSTM Accuracy</div><div class="kpi-t neu">★ State-of-art</div></div>
+        </div>
+        <div class="row r21">
+          <div class="card">
+            <div class="ch"><div class="ct">Deep Learning Model Comparison</div><button class="ca">Full report →</button></div>
+            <div class="sub-lbl">Traditional ML · Cleveland</div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n">Random Forest (RF)</span><span class="mbar-p" style="color:#b8860b">92.17%</span></div><div class="mbar-t"><div class="mbar-f" style="width:92.17%;background:#b8860b"></div></div></div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n">SVM</span><span class="mbar-p" style="color:var(--color-text-secondary)">89.07%</span></div><div class="mbar-t"><div class="mbar-f" style="width:89.07%;background:var(--color-text-secondary)"></div></div></div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n">KNN</span><span class="mbar-p" style="color:var(--color-text-secondary)">89.82%</span></div><div class="mbar-t"><div class="mbar-f" style="width:89.82%;background:var(--color-text-secondary)"></div></div></div>
+            <div class="div"></div>
+            <div class="sub-lbl">Deep Learning · Comprehensive</div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n">ANN</span><span class="mbar-p" style="color:#1a7a4a">94.03%</span></div><div class="mbar-t"><div class="mbar-f" style="width:94.03%;background:#1a7a4a"></div></div></div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n">LSTM</span><span class="mbar-p" style="color:#27ae60">96.64%</span></div><div class="mbar-t"><div class="mbar-f" style="width:96.64%;background:#27ae60"></div></div></div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n">CNN</span><span class="mbar-p" style="color:#0f2044">96.86%</span></div><div class="mbar-t"><div class="mbar-f" style="width:96.86%;background:#0f2044"></div></div></div>
+            <div class="mbar"><div class="mbar-h"><span class="mbar-n" style="font-weight:500">★ CNN-LSTM (Hybrid)</span><span class="mbar-p" style="color:#c0392b;font-size:14px">98.86%</span></div><div class="mbar-t" style="height:7px"><div class="mbar-f" style="width:98.86%;background:#c0392b"></div></div></div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Today's Screening</div></div>
+            <div class="donut-w">
+              <svg width="90" height="90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="38" fill="none" stroke="var(--color-background-secondary)" stroke-width="14"/>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#1a7a4a" stroke-width="14" stroke-dasharray="166 73" stroke-dashoffset="55" stroke-linecap="round"/>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#c0392b" stroke-width="14" stroke-dasharray="73 166" stroke-dashoffset="-111" stroke-linecap="round"/>
+                <text x="50" y="54" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)" font-family="var(--font-sans)">68.8%</text>
+              </svg>
+              <div class="dleg">
+                <div class="dli"><div class="dld" style="background:#1a7a4a"></div><span class="dll">HD Negative</span><span class="dlv">858</span></div>
+                <div class="dli"><div class="dld" style="background:#c0392b"></div><span class="dll">HD Positive</span><span class="dlv">389</span></div>
+                <div class="dli"><div class="dld" style="background:#b8860b"></div><span class="dll">Pending Review</span><span class="dlv">22</span></div>
+              </div>
+            </div>
+            <div class="div"></div>
+            <div class="prog-i"><div class="prog-h"><span class="prog-l">Sensitivity (Recall)</span><span class="prog-p">98.74%</span></div><div class="prog-t"><div class="prog-f" style="width:98.74%;background:#c0392b"></div></div></div>
+            <div class="prog-i"><div class="prog-h"><span class="prog-l">Specificity</span><span class="prog-p">99.42%</span></div><div class="prog-t"><div class="prog-f" style="width:99.42%;background:#0f2044"></div></div></div>
+            <div class="prog-i"><div class="prog-h"><span class="prog-l">AUC Score</span><span class="prog-p">99.78%</span></div><div class="prog-t"><div class="prog-f" style="width:99.78%;background:#1a7a4a"></div></div></div>
+          </div>
+        </div>
+        <div class="row r12">
+          <div class="card">
+            <div class="ch"><div class="ct">Recent Predictions</div><button class="ca">View all</button></div>
+            <div class="acts">
+              <div class="ai"><div class="a-ic r">⚠</div><div><div class="a-t"><strong>HD Positive</strong> — PT-4821 · Age 58 · Male</div><div class="a-m">3 min ago · Confidence 97.4% · Referred to Cardiology</div></div></div>
+              <div class="ai"><div class="a-ic g">✓</div><div><div class="a-t"><strong>HD Negative</strong> — PT-4820 · Age 42 · Female</div><div class="a-m">11 min ago · Confidence 99.1% · Cleared</div></div></div>
+              <div class="ai"><div class="a-ic r">⚠</div><div><div class="a-t"><strong>HD Positive</strong> — PT-4819 · Age 67 · Male</div><div class="a-m">28 min ago · High cholesterol + ST slope flag</div></div></div>
+              <div class="ai"><div class="a-ic o">◉</div><div><div class="a-t"><strong>Model retrained</strong> on 14 new Cleveland records</div><div class="a-m">2 hours ago · Accuracy stable at 98.86%</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">State-of-Art Comparison</div></div>
+            <table>
+              <thead><tr><th>Model</th><th>Dataset</th><th>Accuracy</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:500;color:#c0392b">★ CNN-LSTM (Ours)</td><td>Comprehensive</td><td style="color:#c0392b;font-weight:500">98.86%</td><td><span class="bdg pos">Best</span></td></tr>
+                <tr><td>CNN-LSTM (Ours)</td><td>Cleveland</td><td style="font-weight:500">97.75%</td><td><span class="bdg hi">Top 2</span></td></tr>
+                <tr><td>Ensemble + Extra Trees</td><td>Comprehensive</td><td>92.34%</td><td><span class="bdg neg">Prior</span></td></tr>
+                <tr><td>LOFS-ANN</td><td>UCI HD</td><td>90.50%</td><td><span class="bdg neg">Prior</span></td></tr>
+                <tr><td>Hard Voting Ensemble</td><td>UCI HD</td><td>90.00%</td><td><span class="bdg neg">Prior</span></td></tr>
+                <tr><td>Hybrid RF+DT</td><td>Cleveland</td><td>88.70%</td><td><span class="bdg neg">Prior</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PREDICT -->
+      <div class="page" id="page-predict">
+        <div class="pred-hero">
+          <h2>Patient Heart Disease Prediction</h2>
+          <p>Enter patient clinical parameters below. The CNN-LSTM hybrid model will analyze through ANN, LSTM, CNN, and hybrid layers to provide accurate cardiovascular risk assessment.</p>
+        </div>
+        <div class="card">
+          <div class="ch"><div class="ct">Patient Clinical Parameters</div><span style="font-size:11px;color:var(--color-text-secondary)">Cleveland · 13 Key Features</span></div>
+          <div class="pform">
+            <div class="pf"><label>Age (years)</label><input type="number" id="p-age" placeholder="e.g. 55" min="20" max="100"></div>
+            <div class="pf"><label>Sex</label><select id="p-sex"><option value="">Select</option><option>Male</option><option>Female</option></select></div>
+            <div class="pf"><label>Chest Pain Type</label><select id="p-cp"><option value="">Select</option><option>Typical Angina</option><option>Atypical Angina</option><option>Non-anginal Pain</option><option>Asymptomatic</option></select></div>
+            <div class="pf"><label>Resting BP (mmHg)</label><input type="number" id="p-bp" placeholder="e.g. 130"></div>
+            <div class="pf"><label>Serum Cholesterol (mg/dl)</label><input type="number" id="p-chol" placeholder="e.g. 240"></div>
+            <div class="pf"><label>Fasting Blood Sugar</label><select id="p-fbs"><option value="">Select</option><option>&gt; 120 mg/dl (High)</option><option>≤ 120 mg/dl (Normal)</option></select></div>
+            <div class="pf"><label>Resting ECG Results</label><select id="p-ecg"><option value="">Select</option><option>Normal</option><option>ST-T Abnormality</option><option>Left Ventricular Hypertrophy</option></select></div>
+            <div class="pf"><label>Max Heart Rate</label><input type="number" id="p-hr" placeholder="e.g. 150"></div>
+            <div class="pf"><label>Exercise Induced Angina</label><select id="p-exang"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+            <div class="pf"><label>Oldpeak (ST Depression)</label><input type="number" id="p-op" placeholder="e.g. 1.5" step="0.1"></div>
+            <div class="pf"><label>ST Slope</label><select id="p-slope"><option value="">Select</option><option>Upsloping</option><option>Flat</option><option>Downsloping</option></select></div>
+            <div class="pf"><label>Dataset Source</label><select id="p-ds"><option>Cleveland</option><option>Comprehensive</option></select></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="btn-pred" id="pred-btn" onclick="doPredict()">⚡ Run CNN-LSTM Prediction</button>
+            <button class="btn-clr" onclick="clearForm()">Clear</button>
+          </div>
+          <div class="res-card" id="res-card">
+            <div class="res-top">
+              <div class="res-big" id="res-ic"></div>
+              <div><div class="res-v" id="res-v"></div><div class="res-s" id="res-s"></div></div>
+            </div>
+            <div class="conf-row">
+              <div class="conf-l"><span>Confidence Score</span><span id="conf-pct"></span></div>
+              <div class="conf-t"><div class="conf-f" id="conf-f" style="width:0"></div></div>
+            </div>
+            <div style="margin-top:12px;font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Individual Model Votes</div>
+            <div class="mv-grid" id="mv-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATIENTS -->
+      <div class="page" id="page-patients">
+        <div class="card">
+          <div class="ch"><div class="ct">Patient Records</div><button class="ca">Export →</button></div>
+          <table>
+            <thead><tr><th>Patient ID</th><th>Age/Sex</th><th>Chest Pain</th><th>Cholesterol</th><th>Prediction</th><th>Confidence</th></tr></thead>
+            <tbody>
+              <tr><td>#PT-4821</td><td>58 / M</td><td>Asymptomatic</td><td>280 mg/dl</td><td><span class="bdg pos">HD Positive</span></td><td style="color:#c0392b;font-weight:500">97.4%</td></tr>
+              <tr><td>#PT-4820</td><td>42 / F</td><td>Non-anginal</td><td>196 mg/dl</td><td><span class="bdg neg">HD Negative</span></td><td style="color:#1a7a4a;font-weight:500">99.1%</td></tr>
+              <tr><td>#PT-4819</td><td>67 / M</td><td>Asymptomatic</td><td>320 mg/dl</td><td><span class="bdg pos">HD Positive</span></td><td style="color:#c0392b;font-weight:500">98.7%</td></tr>
+              <tr><td>#PT-4818</td><td>51 / F</td><td>Atypical Angina</td><td>214 mg/dl</td><td><span class="bdg neg">HD Negative</span></td><td style="color:#1a7a4a;font-weight:500">96.3%</td></tr>
+              <tr><td>#PT-4817</td><td>63 / M</td><td>Typical Angina</td><td>265 mg/dl</td><td><span class="bdg pos">HD Positive</span></td><td style="color:#c0392b;font-weight:500">99.0%</td></tr>
+              <tr><td>#PT-4816</td><td>38 / F</td><td>Non-anginal</td><td>178 mg/dl</td><td><span class="bdg neg">HD Negative</span></td><td style="color:#1a7a4a;font-weight:500">97.8%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODELS -->
+      <div class="page" id="page-models">
+        <div class="mc-grid">
+          <div class="mc"><div class="mc-n">98.86%</div><div class="mc-l">Accuracy</div></div>
+          <div class="mc"><div class="mc-n">0.9913</div><div class="mc-l">Precision</div></div>
+          <div class="mc"><div class="mc-n">0.9874</div><div class="mc-l">Sensitivity</div></div>
+          <div class="mc"><div class="mc-n">0.9978</div><div class="mc-l">AUC Score</div></div>
+        </div>
+        <div class="row r11">
+          <div class="card">
+            <div class="ch"><div class="ct">CNN-LSTM Architecture</div></div>
+            <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">
+              <p style="margin-bottom:8px">Hybrid model with <strong style="color:var(--color-text-primary)">30 layers</strong>: 18 convolutional, 12 pooling, 1 fully connected, 1 LSTM, softmax output.</p>
+              <p style="margin-bottom:8px">CNN extracts local spatial features → LSTM captures temporal dependencies → Dense layers classify HD Positive / Negative.</p>
+              <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;border:0.5px solid var(--color-border-tertiary);font-size:11px;margin-top:10px">
+                <div>Data split: <strong style="color:var(--color-text-primary)">80% training · 20% testing</strong></div>
+                <div style="margin-top:4px">Normalization: <strong style="color:var(--color-text-primary)">Z-score (zero mean, unit variance)</strong></div>
+                <div style="margin-top:4px">Feature selection: <strong style="color:var(--color-text-primary)">Extra Tree Classifier (Gini)</strong></div>
+                <div style="margin-top:4px">Dropout: <strong style="color:var(--color-text-primary)">20% per convolutional block</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><div class="ct">Cleveland Dataset Results</div></div>
+            <table>
+              <thead><tr><th>Model</th><th>Accuracy</th><th>AUC</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:500;color:#c0392b">★ CNN-LSTM</td><td style="color:#c0392b;font-weight:500">97.75%</td><td style="color:#c0392b">0.9885</td></tr>
+                <tr><td>CNN</td><td>95.02%</td><td>0.9686</td></tr>
+                <tr><td>LSTM</td><td>94.65%</td><td>0.9578</td></tr>
+                <tr><td>ANN</td><td>93.21%</td><td>0.9514</td></tr>
+                <tr><td>RF (Best ML)</td><td>92.17%</td><td>0.9120</td></tr>
+                <tr><td>SVM</td><td>89.07%</td><td>0.8791</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURES -->
+      <div class="page" id="page-features">
+        <div class="card">
+          <div class="ch"><div class="ct">Feature Importance (Extra Tree Classifier)</div><span style="font-size:11px;color:var(--color-text-secondary)">Gini Relevance · Cleveland</span></div>
+          <div style="max-width:580px">
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">ST Slope</span><span class="feat-rk">0.1650</span></div><div class="feat-t"><div class="feat-f" style="width:100%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Exercise Angina</span><span class="feat-rk">0.1349</span></div><div class="feat-t"><div class="feat-f" style="width:82%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Chest Pain Type</span><span class="feat-rk">0.1246</span></div><div class="feat-t"><div class="feat-f" style="width:75%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Max Heart Rate</span><span class="feat-rk">0.1010</span></div><div class="feat-t"><div class="feat-f" style="width:61%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Cholesterol</span><span class="feat-rk">0.0918</span></div><div class="feat-t"><div class="feat-f" style="width:56%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Oldpeak</span><span class="feat-rk">0.0908</span></div><div class="feat-t"><div class="feat-f" style="width:55%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Age</span><span class="feat-rk">0.0782</span></div><div class="feat-t"><div class="feat-f" style="width:47%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Resting BP</span><span class="feat-rk">0.0769</span></div><div class="feat-t"><div class="feat-f" style="width:47%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Sex</span><span class="feat-rk">0.0626</span></div><div class="feat-t"><div class="feat-f" style="width:38%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Resting ECG</span><span class="feat-rk">0.0386</span></div><div class="feat-t"><div class="feat-f" style="width:23%"></div></div></div>
+            <div class="feat-b"><div class="feat-h"><span class="feat-nm">Fasting Blood Sugar</span><span class="feat-rk">0.0355</span></div><div class="feat-t"><div class="feat-f" style="width:22%"></div></div></div>
+          </div>
+          <div style="margin-top:14px;background:rgba(192,57,43,.05);border:0.5px solid rgba(192,57,43,.2);border-radius:var(--border-radius-md);padding:12px;font-size:12px;color:var(--color-text-secondary)">
+            <strong style="color:#c0392b">ST Slope</strong> is the highest ranked feature (0.1650) — the slope of the peak exercise ST segment is the most critical predictor of heart disease in this dataset.
+          </div>
+        </div>
+      </div>
+
+      <!-- DATASETS -->
+      <div class="page" id="page-datasets">
+        <div class="card">
+          <div class="ch"><div class="ct">Heart Disease Datasets</div></div>
+          <table>
+            <thead><tr><th>Dataset</th><th>Instances</th><th>Features</th><th>Source</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:500">Cleveland (Primary)</td><td>303</td><td>14</td><td>Cleveland Clinic Foundation · UCI</td></tr>
+              <tr><td>Hungarian</td><td>294</td><td>11</td><td>Hungarian Institute of Cardiology</td></tr>
+              <tr><td>Statlog (Heart)</td><td>270</td><td>11</td><td>Statlog Foundation</td></tr>
+              <tr><td>Long Beach VA</td><td>200</td><td>11</td><td>VA Long Beach Clinical Foundation</td></tr>
+              <tr><td>Switzerland</td><td>123</td><td>11</td><td>Switzerland Medical Center</td></tr>
+              <tr><td style="font-weight:500;color:#c0392b">Comprehensive (Combined)</td><td style="font-weight:500;color:#c0392b">1,190</td><td>11</td><td>IEEE Dataport / Kaggle</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REPORTS / SETTINGS -->
+      <div class="page" id="page-reports"><div class="ph"><div class="ph-ic">□</div><h2>Clinical Reports</h2><p>Generate detailed reports of patient screenings, model performance summaries, and cardiovascular risk analyses.</p></div></div>
+      <div class="page" id="page-settings"><div class="ph"><div class="ph-ic">◎</div><h2>System Settings</h2><p>Configure model parameters, dataset sources, preprocessing settings, notification preferences and user access controls.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const meta={
+  overview:['Dashboard Overview','CNN-LSTM Hybrid Heart Disease Prediction System'],
+  predict:['Patient Prediction','Enter clinical parameters for cardiovascular risk assessment'],
+  patients:['Patient Records','All screened patients and their prediction results'],
+  models:['Model Performance','Deep learning model comparison and architecture'],
+  features:['Feature Analysis','Clinical feature importance ranking via Extra Tree Classifier'],
+  datasets:['Heart Disease Datasets','Cleveland, Hungarian, Swiss, Statlog & Long Beach VA'],
+  reports:['Clinical Reports','Generate and export prediction reports'],
+  settings:['System Settings','Configure model and system parameters'],
+};
+function goto(p,btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
+  document.getElementById('page-'+p).classList.add('on');
+  if(btn)btn.classList.add('on');
+  const[t,s]=meta[p]||['HDNN',''];
+  document.getElementById('pg-title').textContent=t;
+  document.getElementById('pg-sub').textContent=s;
+}
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+}
+tick();setInterval(tick,1000);
+
+function doPredict(){
+  const btn=document.getElementById('pred-btn');
+  btn.textContent='Analyzing…';btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='⚡ Run CNN-LSTM Prediction';btn.disabled=false;
+    const age=parseInt(document.getElementById('p-age').value)||50;
+    const chol=parseInt(document.getElementById('p-chol').value)||200;
+    const slope=document.getElementById('p-slope').value;
+    const cp=document.getElementById('p-cp').value;
+    const risk=(age>55?1:0)+(chol>240?1:0)+(slope==='Flat'||slope==='Downsloping'?1:0)+(cp==='Asymptomatic'?1:0);
+    const pos=risk>=2||Math.random()>.6;
+    const conf=(pos?(88+Math.random()*11):(90+Math.random()*9)).toFixed(1);
+    const card=document.getElementById('res-card');
+    card.className='res-card on '+(pos?'pos':'neg');
+    const ri=document.getElementById('res-ic');
+    ri.className='res-big '+(pos?'pos':'neg');
+    ri.textContent=pos?'⚠':'✓';
+    const rv=document.getElementById('res-v');
+    rv.className='res-v '+(pos?'pos':'neg');
+    rv.textContent=pos?'HEART DISEASE POSITIVE':'HEART DISEASE NEGATIVE';
+    document.getElementById('res-s').textContent=pos?'High cardiovascular risk. Immediate cardiology consultation recommended.':'No significant cardiovascular risk detected. Continue routine monitoring.';
+    document.getElementById('conf-pct').textContent=conf+'%';
+    const cf=document.getElementById('conf-f');
+    cf.className='conf-f '+(pos?'pos':'neg');
+    setTimeout(()=>{cf.style.width=conf+'%';},50);
+    const models=['ANN','LSTM','CNN','CNN-LSTM'];
+    document.getElementById('mv-grid').innerHTML=models.map(m=>{
+      const r=pos?(Math.random()>.15?'pos':'neg'):(Math.random()>.1?'neg':'pos');
+      const c=(87+Math.random()*12).toFixed(1);
+      return`<div class="mv"><div class="mv-n">${m}</div><div class="mv-r ${r}">${r==='pos'?'⚠ HD+':'✓ HD−'}</div><div class="mv-c">${c}%</div></div>`;
+    }).join('');
+  },2000);
+}
+
+function clearForm(){
+  ['p-age','p-bp','p-chol','p-hr','p-op'].forEach(id=>document.getElementById(id).value='');
+  ['p-sex','p-cp','p-fbs','p-ecg','p-exang','p-slope'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('res-card').className='res-card';
+}
+</script>
